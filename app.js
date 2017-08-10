@@ -54,6 +54,17 @@ passport.deserializeUser(function (id, done) {
     done(err, user);
   });
 });
+const requireLogin = function (req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.redirect('/login/');
+  }
+}
+app.use(function (req, res, next) {
+  res.locals.user = req.user;
+  next();
+})
 
 app.get("/", function (req, res, next) {
   res.render("index", { appType: "Express" })
@@ -86,22 +97,9 @@ app.post('/login/', passport.authenticate('local', {
   failureFlash: true
 }))
 
-// app.get("/login", function (req, res, next) {
-//   res.render("login")
-// })
-
-// app.post("/login", function (req, res, next) {
-//   User.authenticate(req.body.username, req.body.password, function (success, result) {
-//     if (success) {
-//       console.log(result)
-//       res.redirect("/")
-//     } else {
-//       console.log(result)
-//       res.redirect("login")
-//     }
-//   })
-// })
-
+app.get("/home", requireLogin, function(req,res,next){
+  res.render("messagesHome")
+})
 app.listen(3000, function () {
   console.log("App running on port 3000")
 })
