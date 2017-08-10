@@ -1,9 +1,9 @@
 const conn = require('./dbModel.js')
 const bcrypt = require('bcryptjs');
 
-function checkPassword(username,password,done){
+function authenticate(username,password,done){
     let sql  = `
-    SELECT passwordHash
+    SELECT *
     FROM users
     WHERE username = ?
     `
@@ -11,14 +11,15 @@ function checkPassword(username,password,done){
         let passwordHash = results[0].passwordHash
         if(!err){
             if(bcrypt.compareSync(password, passwordHash)){
+                let user = results[0]
                 console.log("Hashes match!")
-                done (true,username)
+                done (null,user)
             }else {
-                done (false,null)
+                done (null,false)
             }
         }else {
             console.log(err)
-            done (false, err)
+            done (err, null)
         }
     })
 }
@@ -40,8 +41,25 @@ function createUser(username,password,displayName,done){
         }
     })
 }
-
+function findById(id,done){
+    console.log("findById was called")
+    let sql  = `
+    SELECT *
+    FROM users
+    WHERE id = ?
+    `
+    conn.query(sql,[id],function(err,results,fields){
+        if(!err){
+            console.log("findByID no error")
+            done ( null, results[0])
+        }else {
+            console.log(err)
+            done (err, null)
+        }
+    })
+}
 module.exports = {
+    authenticate : authenticate,
     createUser : createUser,
-    checkPassword : checkPassword
+    findById : findById
 }
