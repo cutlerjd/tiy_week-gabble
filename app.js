@@ -8,6 +8,8 @@ const flash = require('express-flash-messages')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('./models/usersModel')
+const Post = require('./models/postsModel')
+const Like = require('./models/likesModel')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -34,8 +36,6 @@ passport.use(new LocalStrategy(
         return done(err)
       }
       if (user) {
-        console.log("User was sent in to local strategy")
-        console.log(user)
         return done(null, user)
       } else {
         return done(null, false, {
@@ -80,7 +80,6 @@ app.post("/register", function (req, res, next) {
       res.redirect("/login")
     } else {
       //todo: add error handling
-      console.log(result)
       res.send("eeeeeerrrrrrooooorr")
     }
   })
@@ -92,13 +91,41 @@ app.get('/login/', function (req, res) {
 });
 
 app.post('/login/', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/home',
   failureRedirect: '/login/',
   failureFlash: true
 }))
 
 app.get("/home", requireLogin, function(req,res,next){
-  res.render("messagesHome")
+  Post.getAllPosts(req.user.id,function(results){
+    let posts = {posts:results}
+    res.render("messagesHome",posts)
+  })
+  
+})
+
+app.get("/submit",requireLogin, function(req,res,next){
+  res.render("createPost")
+})
+app.post("/submit", requireLogin, function(req,res,next){
+  Post.createPost(req.body.id,req.body.text,function(success, result){
+    if(success){
+      res.redirect("/home")
+    } else {
+      res.send("EEEEEERRRRROOORR")
+    }
+  })
+})
+app.get("/posts/like/:id", function(req,res,next){
+  console.log("user id",req.user.id)
+  console.log("params id",req.params.id)
+  Like.attachLike(req.user.id,req.params.id,function(success,result){
+    if(success){
+      res.redirect("/home")
+    }else {
+      res.send("ERROR attaching like")
+    }
+  })
 })
 app.listen(3000, function () {
   console.log("App running on port 3000")

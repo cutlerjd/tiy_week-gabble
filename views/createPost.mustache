@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Post</title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+    {{#user}}
+        <h2>Hello {{displayName}}</h2>
+    {{/user}}
+  <h1>Write Post here</h1>
+  <form action="/submit" method="post">
+      <input type="hidden" name="id" value="{{user.id}}">
+      <input type="textarea" placeholder="Text (140 characters)" name="text"></br>
+      <button type="submit">Create Post</button>
+  </form>
+</body>
+</html>
