@@ -1,4 +1,5 @@
 const conn = require('./dbModel.js')
+const Likes = require('./likesModel.js')
 
 function getAllPosts(id,done){
     let sql = `
@@ -7,7 +8,10 @@ function getAllPosts(id,done){
     WHERE active = 1`
     conn.query(sql,function(err,results,fields){
         let arr = identifyOwner(id,results)
-        
+        arr.forEach(function(item,index,arrX){
+            arrX[index] = Likes.getLikes(id,item)
+        })
+        console.log(arr)
         done(arr)
     })
 }
