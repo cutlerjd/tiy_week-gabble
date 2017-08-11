@@ -18,7 +18,13 @@
         {{#owner}}
         <p><a href="/posts/delete/{{id}}">DELETE</a></p>
         {{/owner}}
-        <p> {{#likeCount}}{{.}} likes{{/likeCount}} <a href="/posts/like/{{id}}">Like</a></p>
+        <p> {{#likeCount}}{{.}} likes{{/likeCount}} </p>
+        {{^liked}}
+        <a href="/posts/like/{{id}}">Like</a>
+        {{/liked}}
+        {{#liked}}
+        <p>You've liked this post!</p>
+        {{/liked}}
         <ul>
           {{#likes}}
           <li>{{displayName}} liked this!</li>
