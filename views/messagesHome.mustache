@@ -9,18 +9,19 @@
     {{#user}}
         <h2>Hello {{displayName}}</h2>
     {{/user}}
-  <h1>Insert Posts here</h1>
+  <h1>Your Message Board</h1>
+  <h4><a href="/submit">Create a new Message</a></h4>
   {{#posts}}
     <div>
         <p>Post: {{postcontents}}</p>
-        <p>Who posted this: {{user_id}}</p>
+        <p>Who posted this: {{displayName}}</p>
         {{#owner}}
         <p><a href="/posts/delete/{{id}}">DELETE</a></p>
         {{/owner}}
         <p> {{#likeCount}}{{.}} likes{{/likeCount}} <a href="/posts/like/{{id}}">Like</a></p>
         <ul>
           {{#likes}}
-          <li>{{user_id}} liked this!</li>
+          <li>{{displayName}} liked this!</li>
           {{/likes}}
         </ul>
     </div>

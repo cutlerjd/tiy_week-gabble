@@ -5,6 +5,7 @@ function getAllPosts(id,done){
     let sql = `
     SELECT *
     FROM posts
+    JOIN users ON posts.user_id=users.id
     WHERE active = 1`
     conn.query(sql,function(err,results,fields){
         arr = Likes.chainGetLikes(results,id)

@@ -51,8 +51,9 @@ function chainGetLikes(post_obj_arr, user_id) {
 function getLikesPromise(post_obj, user_id) {
     return new Promise(function (resolve, reject) {
         let sql = `
-        SELECT user_id, timestamp
+        SELECT *
         FROM likes
+        JOIN users On likes.user_id=users.id
         WHERE post_id = ? AND active = true
         `
         conn.query(sql, [post_obj.id], function (err, results, fields) {
