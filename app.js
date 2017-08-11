@@ -99,6 +99,7 @@ app.post('/login/', passport.authenticate('local', {
 app.get("/home", requireLogin, function(req,res,next){
   Post.getAllPosts(req.user.id,function(results){
     let posts = {posts:results}
+    console.dir(posts, {depth:null})
     res.render("messagesHome",posts)
   })
   

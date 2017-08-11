@@ -12,12 +12,17 @@
   <h1>Insert Posts here</h1>
   {{#posts}}
     <div>
-        <p>{{postcontents}}</p>
-        <p>{{user_id}}</p>
+        <p>Post: {{postcontents}}</p>
+        <p>Who posted this: {{user_id}}</p>
         {{#owner}}
-        <p>owner</p>
+        <p><a href="/post/delete/{{id}}">DELETE</a></p>
         {{/owner}}
-        <a href="/posts/like/{{id}}">Like</a>
+        <p> {{#likeCount}}{{.}} likes{{/likeCount}} <a href="/posts/like/{{id}}">Like</a></p>
+        <ul>
+          {{#likes}}
+          <li>{{user_id}} liked this!</li>
+          {{/likes}}
+        </ul>
     </div>
   {{/posts}}
 </body>
