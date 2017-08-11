@@ -118,13 +118,20 @@ app.post("/submit", requireLogin, function(req,res,next){
   })
 })
 app.get("/posts/like/:id", function(req,res,next){
-  console.log("user id",req.user.id)
-  console.log("params id",req.params.id)
   Like.attachLike(req.user.id,req.params.id,function(success,result){
     if(success){
       res.redirect("/home")
     }else {
       res.send("ERROR attaching like")
+    }
+  })
+})
+app.get("/posts/delete/:id", function(req,res,next){
+  Post.deletePost(req.params.id,function(success,result){
+    if(success){
+      res.redirect("/home")
+    }else{
+      res.send("Error")
     }
   })
 })

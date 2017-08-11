@@ -15,7 +15,7 @@
         <p>Post: {{postcontents}}</p>
         <p>Who posted this: {{user_id}}</p>
         {{#owner}}
-        <p><a href="/post/delete/{{id}}">DELETE</a></p>
+        <p><a href="/posts/delete/{{id}}">DELETE</a></p>
         {{/owner}}
         <p> {{#likeCount}}{{.}} likes{{/likeCount}} <a href="/posts/like/{{id}}">Like</a></p>
         <ul>

@@ -29,6 +29,19 @@ function createPost(id,text,done){
         }
     })
 }
+function deletePost(id,done){
+    let sql = `
+    UPDATE posts
+    SET active = false
+    WHERE id = ?`
+    conn.query(sql,[id],function(err,results,fields){
+        if(!err){
+            done(true,results)
+        }else{
+            done(false,err)
+        }
+    })
+}
 function identifyOwner(arr,id){
     return new Promise(function(resolve,reject){
         arr.forEach(function(item){
@@ -41,5 +54,6 @@ function identifyOwner(arr,id){
 }
 module.exports = {
     getAllPosts: getAllPosts,
-    createPost: createPost
+    createPost: createPost,
+    deletePost: deletePost
 }
