@@ -7,12 +7,10 @@ function getAllPosts(id,done){
     FROM posts
     WHERE active = 1`
     conn.query(sql,function(err,results,fields){
-        let arr = identifyOwner(id,results)
-        arr.forEach(function(item,index,arrX){
-            arrX[index] = Likes.getLikes(id,item)
-        })
-        console.log(arr)
-        done(arr)
+        arr = Likes.chainGetLikes(results,id)
+        arr.then(function(data){
+            return identifyOwner(data,id)
+        }).then(done)
     })
 }
 function createPost(id,text,done){
@@ -31,13 +29,15 @@ function createPost(id,text,done){
         }
     })
 }
-function identifyOwner(id,arr){
-    arr.forEach(function(item){
-        if(item.user_id == id){
-            item.owner = true
-        }
+function identifyOwner(arr,id){
+    return new Promise(function(resolve,reject){
+        arr.forEach(function(item){
+            if(item.user_id == id){
+                item.owner = true
+            }
+        })
+        resolve (arr)
     })
-    return arr
 }
 module.exports = {
     getAllPosts: getAllPosts,
