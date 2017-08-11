@@ -10,5 +10,15 @@
         <h2>Hello {{displayName}}</h2>
     {{/user}}
   <h1>Insert Posts here</h1>
+  {{#posts}}
+    <div>
+        <p>{{postcontents}}</p>
+        <p>{{user_id}}</p>
+        {{#owner}}
+        <p>owner</p>
+        {{/owner}}
+        <a href="/posts/like/{{id}}">Like</a>
+    </div>
+  {{/posts}}
 </body>
 </html>
