@@ -10,6 +10,7 @@ const LocalStrategy = require('passport-local').Strategy
 const User = require('./models/usersModel')
 const Post = require('./models/postsModel')
 const Like = require('./models/likesModel')
+const indexRouter = require('./routes/indexRoute')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -66,9 +67,7 @@ app.use(function (req, res, next) {
   next();
 })
 
-app.get("/", function (req, res, next) {
-  res.render("index", { appType: "Express" })
-})
+app.use('/', indexRouter);
 
 app.get("/register", function (req, res, next) {
   res.render("register")
@@ -95,6 +94,10 @@ app.post('/login/', passport.authenticate('local', {
   failureRedirect: '/login/',
   failureFlash: true
 }))
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 app.get("/home", requireLogin, function(req,res,next){
   Post.getAllPosts(req.user.id,function(results){
