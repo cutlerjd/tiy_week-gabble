@@ -6,7 +6,8 @@ function getAllPosts(id,done){
     SELECT *
     FROM posts
     JOIN users ON posts.user_id=users.id
-    WHERE active = 1`
+    WHERE active = 1
+    ORDER BY timestamp DESC`
     conn.query(sql,function(err,results,fields){
         arr = Likes.chainGetLikes(results,id)
         arr.then(function(data){
