@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Create Post</title>
+  <title>Create Message</title>
   <link rel="stylesheet" href="/css/main.css" />
 </head>
 <body>
@@ -10,7 +10,7 @@
         <h2>Hello {{displayName}}</h2>
     {{/user}}
   <h1>Write Post here</h1>
-  <form action="/submit" method="post">
+  <form action="/messages/submit" method="post">
       <input type="hidden" name="id" value="{{user.id}}">
       <textarea rows="7" cols="60" name="text">Text (140 characters)</textarea></br>
       <button type="submit">Create Post</button>

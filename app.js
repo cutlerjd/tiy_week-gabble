@@ -11,6 +11,8 @@ const User = require('./models/usersModel')
 const Post = require('./models/postsModel')
 const Like = require('./models/likesModel')
 const indexRouter = require('./routes/indexRoute')
+const loginRouter = require('./routes/loginRoute')
+const messageBoardRouter = require('./routes/messageBoardRoute')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -68,76 +70,9 @@ app.use(function (req, res, next) {
 })
 
 app.use('/', indexRouter);
+app.use('/login', loginRouter);
+app.use('/messages', requireLogin, messageBoardRouter)
 
-app.get("/register", function (req, res, next) {
-  res.render("register")
-})
-app.post("/register", function (req, res, next) {
-  User.createUser(req.body.username.toLowerCase(), req.body.password, req.body.displayName, function (success, result) {
-    if (success) {
-      console.log("Success registration", result)
-      res.redirect("/login")
-    } else {
-      //todo: add error handling
-      res.send("eeeeeerrrrrrooooorr")
-    }
-  })
-})
-app.get('/login/', function (req, res) {
-  res.render("login", {
-    messages: res.locals.getMessages()
-  });
-});
-
-app.post('/login/', passport.authenticate('local', {
-  successRedirect: '/home',
-  failureRedirect: '/login/',
-  failureFlash: true
-}))
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
-
-app.get("/home", requireLogin, function(req,res,next){
-  Post.getAllPosts(req.user.id,function(results){
-    let posts = {posts:results}
-    console.dir(posts, {depth:null})
-    res.render("messagesHome",posts)
-  })
-  
-})
-
-app.get("/submit",requireLogin, function(req,res,next){
-  res.render("createPost")
-})
-app.post("/submit", requireLogin, function(req,res,next){
-  Post.createPost(req.body.id,req.body.text,function(success, result){
-    if(success){
-      res.redirect("/home")
-    } else {
-      res.send("EEEEEERRRRROOORR")
-    }
-  })
-})
-app.get("/posts/like/:id", function(req,res,next){
-  Like.attachLike(req.user.id,req.params.id,function(success,result){
-    if(success){
-      res.redirect("/home")
-    }else {
-      res.send("ERROR attaching like")
-    }
-  })
-})
-app.get("/posts/delete/:id", function(req,res,next){
-  Post.deletePost(req.params.id,function(success,result){
-    if(success){
-      res.redirect("/home")
-    }else{
-      res.send("Error")
-    }
-  })
-})
 app.listen(3000, function () {
   console.log("App running on port 3000")
 })
