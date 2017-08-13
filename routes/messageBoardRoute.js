@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/postsModel')
 const Like = require('../models/likesModel')
+const expressValidator = require('express-validator')
+
+router.use(expressValidator())
 
 router.get("/", function(req,res,next){
   Post.getAllPosts(req.user.id,function(results){
     let posts = {posts:results}
-    console.dir(posts, {depth:null})
+    // console.dir(posts, {depth:null})
     res.render("messagesHome",posts)
   })
 })
