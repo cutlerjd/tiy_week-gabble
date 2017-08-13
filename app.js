@@ -73,7 +73,7 @@ app.get("/register", function (req, res, next) {
   res.render("register")
 })
 app.post("/register", function (req, res, next) {
-  User.createUser(req.body.username, req.body.password, req.body.displayName, function (success, result) {
+  User.createUser(req.body.username.toLowerCase(), req.body.password, req.body.displayName, function (success, result) {
     if (success) {
       console.log("Success registration", result)
       res.redirect("/login")
