@@ -7,7 +7,7 @@ function authenticate(username, password, done) {
     FROM users
     WHERE username = ?
     `
-    conn.query(sql, [username], function (err, results, fields) {
+    conn.query(sql, [username.toLowerCase()], function (err, results, fields) {
         if (!err) {
             if (results[0]) {
                 let passwordHash = results[0].passwordHash
