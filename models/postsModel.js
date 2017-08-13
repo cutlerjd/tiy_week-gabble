@@ -3,9 +3,9 @@ const Likes = require('./likesModel.js')
 
 function getAllPosts(id,done){
     let sql = `
-    SELECT *
-    FROM posts
-    JOIN users ON posts.user_id=users.id
+    SELECT p.id as id, p.user_id as user_id, p.postcontents, u.displayName as displayName
+    FROM posts p
+    JOIN users  u ON p.user_id=u.id
     WHERE active = 1
     ORDER BY timestamp DESC`
     conn.query(sql,function(err,results,fields){
@@ -34,7 +34,7 @@ function createPost(id,text,done){
 function deletePost(id,done){
     let sql = `
     UPDATE posts
-    SET active = false
+    SET active = 0
     WHERE id = ?`
     conn.query(sql,[id],function(err,results,fields){
         if(!err){
