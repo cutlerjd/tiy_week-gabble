@@ -13,7 +13,12 @@ router.get("/", function (req, res, next) {
     res.render("messagesHome", posts)
   })
 })
-
+router.get("/test", function (req, res, next) {
+  Post.getAllPosts(req.user.id, function (results) {
+    let posts = { posts: results }
+    res.render("templateHome", posts)
+  })
+})
 router.get("/submit", function (req, res, next) {
   res.render("createPost")
 })
