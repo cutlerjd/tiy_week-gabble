@@ -48,7 +48,6 @@ function createUser(username, password, displayName, done) {
     })
 }
 function findById(id, done) {
-    console.log("findById was called")
     let sql = `
     SELECT *
     FROM users
